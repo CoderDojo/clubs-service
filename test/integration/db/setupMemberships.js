@@ -52,4 +52,13 @@ module.exports = async (db) => {
     userPermissions: [],
     userTypes: ['parent-guardian'],
   });
+  // Inserting new row to take over from a deleted role.
+  await db('cd_usersdojos').insert({
+    id: '338e21c2-0082-4de1-ad61-2e203c722ad6',
+    user_id: 'd8a9217a-61e6-4227-af88-c1c9307921d3',
+    dojo_id: '7cc86992-de44-4fad-b49f-cc4615b05ab4',
+    deleted: 1,
+    userPermissions: ['{"title":"Bill Stickers","name":"will-be-prosecuted"}'],
+    userTypes: ['onions'],
+  });
 };
