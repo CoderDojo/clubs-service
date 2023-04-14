@@ -23,6 +23,7 @@ class MembershipsController {
 
   static async upsert(userId, dojoId, userType, builder = MemberModel.query()) {
     const currentMembership = await builder.where('deleted', 0).findOne({ userId, dojoId });
+    const fieldsToReturn = ['id', 'userId', 'dojoId', 'userTypes', 'userPermissions'];
 
     if (currentMembership) {
       if (currentMembership.hasRole(userType)) throw MembershipExists;
@@ -31,11 +32,11 @@ class MembershipsController {
       return currentMembership.$query().patch({
         userTypes: currentMembership.userTypes,
         userPermissions: currentMembership.userPermissions,
-      }).returning('id', 'userId', 'dojoId', 'userTypes', 'userPermissions');
+      }).returning(...fieldsToReturn);
     }
 
     const membership = new MemberModel(userId, dojoId, userType);
-    return membership.$query().insert().returning('id', 'userId', 'dojoId', 'userTypes', 'userPermissions');
+    return membership.$query().insert().returning(...fieldsToReturn);
   }
 
   static async delete(query, builder = MemberModel.query()) {
