@@ -22,7 +22,7 @@ class MembershipsController {
   }
 
   static async upsert(userId, dojoId, userType, builder = MemberModel.query()) {
-    const currentMembership = await builder.were('deleted', 0).findOne({ userId, dojoId });
+    const currentMembership = await builder.where('deleted', 0).findOne({ userId, dojoId });
 
     if (currentMembership) {
       if (currentMembership.hasRole(userType)) throw MembershipExists;
