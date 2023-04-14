@@ -13,7 +13,7 @@ describe('clubs/handlers:createMember', () => {
 
   before(() => {
     sandbox = sinon.createSandbox();
-    membershipsController.create = sandbox.stub();
+    membershipsController.upsert = sandbox.stub();
     clubsController.load = sandbox.stub();
     handlers = proxy('../../../../clubs/handlers/createMember', {
       '../../memberships/controller': membershipsController,
@@ -61,7 +61,7 @@ describe('clubs/handlers:createMember', () => {
     expect(next).to.have.been.calledWith(err);
   });
 
-  it('should create the membership', async () => {
+  it('should upsert the membership', async () => {
     req.body = {
       userId: 'u1',
       userType: 'champion',
@@ -69,9 +69,9 @@ describe('clubs/handlers:createMember', () => {
     req.params = {
       id: 'd1',
     };
-    membershipsController.create.resolves({ id: 'm1' });
+    membershipsController.upsert.resolves({ id: 'm1' });
     await handlers[1](req, res, next);
-    expect(membershipsController.create).to.have.been.calledOnce.and
+    expect(membershipsController.upsert).to.have.been.calledOnce.and
       .calledWith('u1', 'd1', 'champion');
     expect(res.send).to.have.been.calledWith({ id: 'm1' });
   });

@@ -17,7 +17,7 @@ module.exports = [
     const { userId, userType } = req.body;
     const { id: dojoId } = req.params;
     try {
-      return res.send(await memberController.create(userId, dojoId, userType));
+      return res.send(await memberController.upsert(userId, dojoId, userType));
     } catch (e) {
       next(e);
     }
