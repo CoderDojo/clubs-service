@@ -22,12 +22,18 @@ class MembershipsController {
   }
 
   static async upsert(userId, dojoId, userType, builder = MemberModel.query()) {
-    const currentMembership = await MemberModel.query().findOne({ userId, dojoId });
+    const currentMembership = await builder.findOne({ userId, dojoId });
 
     if (currentMembership) {
       if (currentMembership.hasRole(userType)) throw MembershipExists;
+
       currentMembership.addRole(userType);
-      return builder.update({ id: currentMembership.id, userTypes: currentMembership.userTypes, userPermissions: currentMembership.userPermissions }).returning('*');
+      return builder.update({
+        userId,
+        dojoId,
+        userTypes: currentMembership.userTypes,
+        userPermissions: currentMembership.userPermissions,
+      }).returning('*');
     }
 
     const membership = new MemberModel(userId, dojoId, userType);
