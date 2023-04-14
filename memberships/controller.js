@@ -28,16 +28,14 @@ class MembershipsController {
       if (currentMembership.hasRole(userType)) throw MembershipExists;
 
       currentMembership.addRole(userType);
-      return builder.update({
-        userId,
-        dojoId,
+      return currentMembership.$query().patch({
         userTypes: currentMembership.userTypes,
         userPermissions: currentMembership.userPermissions,
-      }).returning('*');
+      }).returning('id', 'userId', 'dojoId', 'userTypes', 'userPermissions');
     }
 
     const membership = new MemberModel(userId, dojoId, userType);
-    return membership.$query().insert().returning('*');
+    return membership.$query().insert().returning('id', 'userId', 'dojoId', 'userTypes', 'userPermissions');
   }
 
   static async delete(query, builder = MemberModel.query()) {
