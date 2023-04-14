@@ -11,6 +11,7 @@ class MembershipsController {
     const membership = new MemberModel(userId, dojoId, userType);
     return membership.$query().insert().returning('*');
   }
+
   // You shouldn't update the userId or the DojoId
   // They represent a different membership
   static async update(id, userType, builder = MemberModel.query()) {
@@ -19,6 +20,20 @@ class MembershipsController {
     currentMembership.addRole(userType);
     return builder.update({ id, userTypes: currentMembership.userTypes, userPermissions: currentMembership.userPermissions }).returning('*');
   }
+
+  static async upsert(userId, dojoId, userType, builder = MemberModel.query()) {
+    const currentMembership = await MemberModel.query().findOne({ userId, dojoId });
+
+    if (currentMembership) {
+      if (currentMembership.hasRole(userType)) throw MembershipExists;
+      currentMembership.addRole(userType);
+      return builder.update({ id: currentMembership.id, userTypes: currentMembership.userTypes, userPermissions: currentMembership.userPermissions }).returning('*');
+    }
+
+    const membership = new MemberModel(userId, dojoId, userType);
+    return membership.$query().insert().returning('*');
+  }
+
   static async delete(query, builder = MemberModel.query()) {
     return builder
       .where(query)
