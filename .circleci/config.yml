@@ -11,19 +11,19 @@ jobs:
           command: |
             curl -L https://github.com/docker/compose/releases/download/1.19.0/docker-compose-`uname -s`-`uname -m` > ~/docker-compose
             chmod +x ~/docker-compose
-            mv ~/docker-compose /usr/local/bin/docker-compose
+            # mv ~/docker-compose /usr/local/bin/docker-compose
       - restore_cache:
           key: node-modules-cache-{{ checksum "yarn.lock" }}
       - run:
           name: Install Dependencies
-          command: docker-compose run --rm --no-deps test yarn
+          command: ~/docker-compose run --rm --no-deps test yarn
       - save_cache:
           key: node-modules-cache-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
       - run:
           name: Tests
-          command: docker-compose run --rm test
+          command: ~/docker-compose run --rm test
   deploy:
     working_directory: ~/clubs-service
     docker:
