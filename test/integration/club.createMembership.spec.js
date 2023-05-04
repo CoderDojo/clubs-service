@@ -45,7 +45,7 @@ describe('integration:club:createMembership', () => {
         userType: 'mentor',
       })
       .set('Accept', 'application/json')
-      .expect(400);
+      .expect(409);
   });
   it('should return 404 on non-existing club', async () => {
     await request(app)
