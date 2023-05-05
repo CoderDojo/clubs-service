@@ -6,7 +6,7 @@ class ValidationHelper {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       logger.error(errors.mapped());
-      return res.status(400).json({ errors: errors.mapped() });
+      return res.status(422).json({ errors: errors.mapped() });
     }
     return next();
   }

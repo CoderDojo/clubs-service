@@ -28,11 +28,11 @@ describe('integration:leads:list', () => {
     expect(res.body.total).to.equal(0);
   });
 
-  it('should return 400 on wrong params', async () => {
+  it('should return 422 on wrong params', async () => {
     await request(app)
       .get('/leads?userId=123')
       .set('Accept', 'application/json')
-      .expect(400);
+      .expect(422);
   });
 });
 

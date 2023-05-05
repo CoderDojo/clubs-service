@@ -42,7 +42,7 @@ describe('memberships/controller:create', () => {
         await memberController.create('u1', 'd1', 'champion');
       } catch (e) {
         expect(constr).to.not.have.been.called;
-        expect(e.status).to.equal(400);
+        expect(e.status).to.equal(409);
       }
     });
   });

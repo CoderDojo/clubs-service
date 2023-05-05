@@ -21,14 +21,14 @@ describe('integration:membership:update', () => {
     expect(res.body.userTypes).to.eql(['parent-guardian', 'mentor']);
     expect(res.body.userPermissions).to.eql([{ title: 'Ticketing Admin', name: 'ticketing-admin' }]);
   });
-  it('should return 400 when the role already exists', async () => {
+  it('should return 409 when the role already exists', async () => {
     await request(app)
       .post('/memberships/463e716d-e2c6-42f6-9809-dc6236f0e480/roles')
       .send({
         userType: 'mentor',
       })
       .set('Accept', 'application/json')
-      .expect(400);
+      .expect(409);
   });
   it('should not have duplicate permissions', async () => {
     const res = await request(app)

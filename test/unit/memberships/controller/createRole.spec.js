@@ -42,7 +42,7 @@ describe('memberships/controller:update', () => {
         expect(queryBuilder.findOne).to.have.been.calledOnce.and
           .calledWith({ id: 'u1' });
         expect(queryBuilder.update).to.not.have.been.called;
-        expect(e.status).to.equal(400);
+        expect(e.status).to.equal(409);
       }
     });
   });

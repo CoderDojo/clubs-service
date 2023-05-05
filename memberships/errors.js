@@ -9,7 +9,7 @@ class MembershipExists extends Error {
   constructor() {
     super();
     this.message = 'Membership already has this role';
-    this.status = 400;
+    this.status = 409;
   }
 }
 module.exports = {
